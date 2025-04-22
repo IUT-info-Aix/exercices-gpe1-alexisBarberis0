@@ -1,13 +1,12 @@
 package fr.amu.iut.exercice1;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class FenetreLogiciel extends Application {
@@ -61,9 +60,16 @@ public class FenetreLogiciel extends Application {
         Button bouton1  = new Button("Bouton 1");
         Button bouton2  = new Button("Bouton 2");
         Button bouton3  = new Button("Bouton 3");
+        Separator separator1 = new Separator(Orientation.VERTICAL);
         barreLateraleGauche.getChildren().addAll(lesBoutons,bouton1, bouton2, bouton3);
+        barreLateraleGauche.setAlignment(Pos.CENTER);
+        VBox.setMargin(barreLateraleGauche, new Insets(10.0d));
+        HBox partieGauche = new HBox();
+        partieGauche.getChildren().addAll(barreLateraleGauche,separator1);
 
-        root.setLeft(barreLateraleGauche);
+        root.setLeft(partieGauche);
+
+
 
         GridPane partieCentraleForm = new GridPane();
         Label NameLabel = new Label("Name :");
@@ -88,12 +94,19 @@ public class FenetreLogiciel extends Application {
 
         VBox partieCentrale = new VBox();
         partieCentrale.getChildren().addAll(partieCentraleForm,partieCentraleBoutons);
-
+        partieCentrale.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         root.setCenter(partieCentrale);
+        partieCentrale.setAlignment(Pos.CENTER);
 
-        Label footer = new Label("Ceci est un label de bas de page");
 
-        root.setBottom(footer);
+        VBox basDePage = new VBox();
+        Separator separator2 = new Separator(Orientation.HORIZONTAL);
+        Label texteBasDePage = new Label("Ceci est un label de bas de page");
+        basDePage.getChildren().addAll(separator2,texteBasDePage);
+        basDePage.setAlignment(Pos.CENTER);
+
+        root.setBottom(basDePage);
+
 
         Scene scene = new Scene(root,800,600);
         primaryStage.setScene(scene);
