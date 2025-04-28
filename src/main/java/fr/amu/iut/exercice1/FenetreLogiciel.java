@@ -53,6 +53,7 @@ public class FenetreLogiciel extends Application {
         Menu menuHelp = new Menu("Help");
 
         MenuBar menuBar = new MenuBar(menuFile, menuEdit, menuHelp);
+
         root.setTop(menuBar);
 
         VBox barreLateraleGauche = new VBox();
@@ -63,15 +64,17 @@ public class FenetreLogiciel extends Application {
         Separator separator1 = new Separator(Orientation.VERTICAL);
         barreLateraleGauche.getChildren().addAll(lesBoutons,bouton1, bouton2, bouton3);
         barreLateraleGauche.setAlignment(Pos.CENTER);
-        VBox.setMargin(barreLateraleGauche, new Insets(10.0d));
-        HBox partieGauche = new HBox();
-        partieGauche.getChildren().addAll(barreLateraleGauche,separator1);
 
+        VBox.setMargin(bouton1, new Insets(10, 0, 0, 0));
+        VBox.setMargin(bouton2, new Insets(10, 0, 0, 0));
+        VBox.setMargin(bouton3, new Insets(10, 0, 0, 0));
+
+        HBox partieGauche = new HBox(barreLateraleGauche,separator1);
         root.setLeft(partieGauche);
 
-
-
         GridPane partieCentraleForm = new GridPane();
+        partieCentraleForm.setHgap(10);
+        partieCentraleForm.setVgap(10);
         Label NameLabel = new Label("Name :");
         TextField NameChamp = new TextField();
         Label EmailLabel = new Label("Email :");
@@ -79,24 +82,29 @@ public class FenetreLogiciel extends Application {
         Label PasswordLabel = new Label("Password :");
         PasswordField PasswordChamp = new PasswordField();
 
+        partieCentraleForm.setAlignment(Pos.CENTER);
         partieCentraleForm.add(NameLabel,0,0);
         partieCentraleForm.add(NameChamp,1,0);
         partieCentraleForm.add(EmailLabel,0,1);
         partieCentraleForm.add(EmailChamp,1,1);
         partieCentraleForm.add(PasswordLabel,0,2);
         partieCentraleForm.add(PasswordChamp,1,2);
+        
 
         HBox partieCentraleBoutons = new HBox();
+        partieCentraleBoutons.setAlignment(Pos.CENTER);
         Button submit = new Button("Submit");
         Button cancel = new Button("Cancel");
+        HBox.setMargin(submit, new Insets(10));
+        HBox.setMargin(cancel, new Insets(10));
 
         partieCentraleBoutons.getChildren().addAll(submit,cancel);
 
         VBox partieCentrale = new VBox();
         partieCentrale.getChildren().addAll(partieCentraleForm,partieCentraleBoutons);
-        partieCentrale.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        root.setCenter(partieCentrale);
         partieCentrale.setAlignment(Pos.CENTER);
+        root.setCenter(partieCentrale);
+
 
 
         VBox basDePage = new VBox();
