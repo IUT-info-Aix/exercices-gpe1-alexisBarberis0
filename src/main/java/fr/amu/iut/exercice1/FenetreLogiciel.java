@@ -14,7 +14,6 @@ public class FenetreLogiciel extends Application {
     //Petite modification
     @Override
     public void start(Stage primaryStage) {
-        Separator separator = new Separator();
         BorderPane root = new BorderPane();
 
         SeparatorMenuItem separatorMenuItem1= new SeparatorMenuItem();
@@ -89,7 +88,7 @@ public class FenetreLogiciel extends Application {
         partieCentraleForm.add(EmailChamp,1,1);
         partieCentraleForm.add(PasswordLabel,0,2);
         partieCentraleForm.add(PasswordChamp,1,2);
-        
+
 
         HBox partieCentraleBoutons = new HBox();
         partieCentraleBoutons.setAlignment(Pos.CENTER);
