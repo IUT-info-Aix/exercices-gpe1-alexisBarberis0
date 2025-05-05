@@ -5,4 +5,6 @@ open module tp.intro.javafx {
     requires javafx.fxml;
     requires java.desktop;
     exports com.example.partie1;
+    exports com.example.partie2;
+    exports com.example.partie3;
 }
