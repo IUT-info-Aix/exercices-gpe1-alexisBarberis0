@@ -13,6 +13,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.time.Instant;
+
 import static fr.amu.iut.exercice5.Personnage.LARGEUR_PERSONNAGE;
 
 public class JeuMain extends Application {
@@ -20,7 +22,9 @@ public class JeuMain extends Application {
     private Scene scene;
     private BorderPane root;
     private Obstacle[] obstacleListe;
-
+    private Instant temps = Instant.EPOCH;
+    private long tempsSecondes;
+    private Label tempsLabel;
 
     @Override
     public void start(Stage primaryStage) {
@@ -34,6 +38,11 @@ public class JeuMain extends Application {
         //panneau du jeu
         Pane jeu = new Pane();
         root.setPrefSize(640, 480);
+        tempsSecondes = 10 - temps.getEpochSecond();
+        System.out.println("Temps : " + tempsSecondes);
+        tempsLabel = new Label("Il reste : " + tempsSecondes + " secondes");
+        tempsLabel.setLayoutX(300.0);
+        jeu.getChildren().add(tempsLabel);
         jeu.getChildren().add(pacman);
         jeu.getChildren().add(fantome);
         root.setCenter(jeu);
@@ -73,6 +82,7 @@ public class JeuMain extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
     private boolean collision_obstacle(Personnage joueur) {
@@ -148,7 +158,6 @@ public class JeuMain extends Application {
                     break;
             }
             if (j1.estEnCollision(j2)){
-                System.out.println("Collision");
                 VBox fin = new VBox();
                 Label titre_fin = new Label();
                 titre_fin.setText("Pac Man a perdu ...");
@@ -172,7 +181,34 @@ public class JeuMain extends Application {
                 fin.getChildren().addAll(titre_fin,restart);
                 root.setCenter(fin);
             }
-
+            tempsSecondes = 10 - temps.getEpochSecond();
+            tempsLabel.setText("Il reste : " + tempsSecondes + " secondes");
+            if (tempsSecondes < 0) {
+                if (j1.estEnCollision(j2)){
+                    VBox fin = new VBox();
+                    Label titre_fin = new Label();
+                    titre_fin.setText("Le fantôme a perdu ...");
+                    Button restart = new Button("Restart");
+                    restart.setOnMouseClicked((MouseEvent event_fin) -> {
+                        Personnage pacman = new Pacman();
+                        Personnage fantome = new Fantome();
+                        Pane jeu = new Pane();
+                        root.setPrefSize(640, 480);
+                        jeu.getChildren().add(pacman);
+                        jeu.getChildren().add(fantome);
+                        pacman.setLayoutX(0);
+                        pacman.setLayoutY(0);
+                        fantome.setLayoutX(root.getPrefWidth()-LARGEUR_PERSONNAGE);
+                        fantome.setLayoutY(root.getPrefHeight()-LARGEUR_PERSONNAGE);
+                        root.setCenter(jeu);
+                        deplacer(pacman, fantome);
+                    });
+                    VBox.setMargin(titre_fin, new Insets(10));
+                    fin.setAlignment(Pos.CENTER);
+                    fin.getChildren().addAll(titre_fin,restart);
+                    root.setCenter(fin);
+                }
+            }
         });
     }
 
