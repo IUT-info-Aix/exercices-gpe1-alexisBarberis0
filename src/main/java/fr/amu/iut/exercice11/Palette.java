@@ -55,7 +55,7 @@ public class Palette extends Application {
         texteDuHaut = new Label();
         texteDuHaut.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         BorderPane.setAlignment(texteDuHaut, Pos.CENTER);
-        texteDuHaut.textProperty().bind(message)
+        //texteDuHaut.textProperty().bind(new SimpleIntegerProperty(nbFois).asString());
         panneau = new Pane();
         panneau.setPrefSize(400, 200);
 
