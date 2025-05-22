@@ -1,6 +1,8 @@
 package fr.amu.iut.exercice12;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,9 +13,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+
 
 @SuppressWarnings("Duplicates")
 public class Palette extends Application {
@@ -43,6 +47,8 @@ public class Palette extends Application {
         BorderPane.setAlignment(texteDuHaut, Pos.CENTER);
         texteDuBas = new Label();
 
+
+
         panneau = new Pane();
         panneau.setPrefSize(400,200);
 
@@ -60,7 +66,22 @@ public class Palette extends Application {
 
         gestionnaireEvenement = (event) -> {
             sourceOfEvent = (CustomButton) event.getSource();
+            sourceOfEvent.setNbClics(sourceOfEvent.getNbClics() + 1);
         };
+
+        ChangeListener<Number> nbClicsListener = new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                texteDuHaut.setText(sourceOfEvent.getText() + " choisi " + newValue + " fois.");
+                panneau.setStyle("-fx-background-color:" + sourceOfEvent.getCouleur());
+                texteDuBas.setText("Le " + sourceOfEvent.getText() + " est une très jolie couleur !");
+                texteDuBas.setTextFill(Color.web(sourceOfEvent.getCouleur()));
+            }
+        };
+
+        vert.nbClicsProperty().addListener(nbClicsListener);
+        rouge.nbClicsProperty().addListener(nbClicsListener);
+        bleu.nbClicsProperty().addListener(nbClicsListener);
 
         vert.setOnAction(gestionnaireEvenement);
         rouge.setOnAction(gestionnaireEvenement);
@@ -70,7 +91,7 @@ public class Palette extends Application {
 
         root.setCenter(panneau);
         root.setTop(texteDuHaut);
-        root.setBottom(boutons);
+        root.setBottom(bas);
 
         Scene scene = new Scene(root);
 
