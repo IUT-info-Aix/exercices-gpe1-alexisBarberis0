@@ -1,10 +1,11 @@
 package fr.amu.iut.exercice11;
 
 import javafx.application.Application;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.property.*;
+import javafx.css.Style;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,9 +20,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import javax.script.Bindings;
+
 import java.awt.event.ActionEvent;
 import java.beans.EventHandler;
+
+import static javafx.beans.binding.Bindings.when;
 
 @SuppressWarnings("Duplicates")
 public class Palette extends Application {
@@ -46,6 +49,11 @@ public class Palette extends Application {
 
     private StringProperty message;
 
+    private BooleanProperty createBindings(){
+        BooleanProperty pasEncoreDeClic = new SimpleBooleanProperty();
+        pasEncoreDeClic.bind(Bindings.notEqual(0,nbFois));
+        return pasEncoreDeClic;
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -55,7 +63,12 @@ public class Palette extends Application {
         texteDuHaut = new Label();
         texteDuHaut.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         BorderPane.setAlignment(texteDuHaut, Pos.CENTER);
-        //texteDuHaut.textProperty().bind(new SimpleIntegerProperty(nbFois).asString());
+        StringProperty couleur = new SimpleStringProperty("");
+        BooleanProperty clicEffectue = this.createBindings();
+        texteDuHaut.textProperty().bind(when(clicEffectue).then(Bindings.concat(couleur, "choisi ", nbFois.asString(), " fois.")).otherwise(""));
+
+        StringProperty couleurPaneau = new SimpleStringProperty("#F4F4F4");
+
         panneau = new Pane();
         panneau.setPrefSize(400, 200);
 
@@ -81,8 +94,8 @@ public class Palette extends Application {
         vert.setOnAction(event -> {
             ++nbVert;
             nbFois.set(nbVert);
-
-            panneau.setStyle("-fx-background-color: #19e023");
+            couleur.setValue("Vert ");
+            couleurPaneau.setValue("#19e023");
 
             message.set("Le Vert est une jolie couleur !");
             texteDuBas.setText(message.get());
@@ -92,8 +105,9 @@ public class Palette extends Application {
         rouge.setOnAction(event -> {
             ++nbRouge;
             nbFois.set(nbRouge);
-            message.set("Le Rouge est une jolie couleur !");
-            panneau.setStyle("-fx-background-color: #e01919");
+            couleur.setValue("Rouge ");
+
+            couleurPaneau.setValue("#e01919");
 
             message.set("Le Rouge est une jolie couleur !");
             texteDuBas.setText(message.get());
@@ -103,15 +117,17 @@ public class Palette extends Application {
         bleu.setOnAction(event -> {
             ++nbBleu;
             nbFois.set(nbBleu);
+            couleur.setValue("Bleu ");
             message.set("Le Bleu est une jolie couleur !");
-            panneau.setStyle("-fx-background-color: #1941e0");
+
+            couleurPaneau.setValue("#1941e0");
 
             message.set("Le Bleu est une jolie couleur !");
             texteDuBas.setText(message.get());
             texteDuBas.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
             texteDuBas.setTextFill(Color.BLUE);
         });
-
+        panneau.styleProperty().bind(Bindings.concat("-fx-background-color: ",couleurPaneau));
 
         boutons.getChildren().addAll(vert, rouge, bleu);
 
